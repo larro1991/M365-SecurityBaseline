@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head><title>M365 Security Audit</title>
+<style>
+    body { font-family: Segoe UI, Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+    h1 { color: #2c3e50; border-bottom: 3px solid #0078d4; padding-bottom: 10px; }
+    h2 { color: #34495e; margin-top: 30px; border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; }
+    .meta { color: #7f8c8d; margin-bottom: 20px; }
+    .dashboard { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+    .card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); min-width: 180px; text-align: center; }
+    .card .number { font-size: 36px; font-weight: bold; }
+    .card .label { color: #7f8c8d; font-size: 12px; margin-top: 5px; }
+    .card.danger .number { color: #e74c3c; }
+    .card.warning .number { color: #e67e22; }
+    .card.ok .number { color: #27ae60; }
+    table { border-collapse: collapse; width: 100%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    th { background: #0078d4; color: #fff; padding: 10px 8px; text-align: left; font-size: 11px; }
+    td { padding: 8px; border-bottom: 1px solid #ecf0f1; font-size: 11px; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    tr:hover { background: #eaf2f8; }
+    .risk { color: #e74c3c; font-weight: bold; }
+    .ok { color: #27ae60; }
+    .rec { background: #fff3cd; padding: 15px; border-radius: 5px; border-left: 4px solid #e67e22; margin: 10px 0; }
+</style></head>
+<body>
+    <h1>Microsoft 365 Security Baseline Audit</h1>
+    <div class="meta">Tenant: Contoso Corp | Generated: 2026-02-15 08:00</div>
+
+    <div class="dashboard">
+        <div class="card warning"><div class="number">84%</div><div class="label">MFA Adoption</div></div>
+        <div class="card danger"><div class="number">38</div><div class="label">Users Without MFA</div></div>
+        <div class="card danger"><div class="number">7</div><div class="label">External Forwarding</div></div>
+        <div class="card ok"><div class="number">5</div><div class="label">CA Policies</div></div>
+        <div class="card warning"><div class="number">14</div><div class="label">Stale Guests</div></div>
+    </div>
+
+    <h2>Users Without MFA (38)</h2>
+    <div class="rec">Recommendation: Enable MFA for all users via Conditional Access policy.</div>
+    <table>
+        <tr><th>Name</th><th>UPN</th><th>MFA Status</th><th>Last Sign-In</th></tr>
+        <tr><td>Williams, Mark</td><td>mwilliams@contoso.com</td><td class="risk">No MFA</td><td>2026-02-14</td></tr>
+        <tr><td>Anderson, Kelly</td><td>kanderson@contoso.com</td><td class="risk">No MFA</td><td>2026-02-13</td></tr>
+        <tr><td>Thompson, Eric</td><td>ethompson@contoso.com</td><td class="risk">No MFA</td><td>2026-02-10</td></tr>
+        <tr><td>Conference Room A</td><td>confrooma@contoso.com</td><td class="risk">No MFA</td><td>2026-01-28</td></tr>
+        <tr><td>Martinez, Carlos</td><td>cmartinez@contoso.com</td><td class="risk">No MFA</td><td>2026-02-14</td></tr>
+        <tr><td>Shared - Invoicing</td><td>invoicing@contoso.com</td><td class="risk">No MFA</td><td>2026-02-12</td></tr>
+        <tr><td>Davis, Rachel</td><td>rdavis@contoso.com</td><td class="risk">No MFA</td><td>2026-02-08</td></tr>
+        <tr><td>SVC-CRM Integration</td><td>svc.crm@contoso.com</td><td class="risk">No MFA</td><td>2026-02-14</td></tr>
+    </table>
+
+    <h2>Mailbox Forwarding Rules (7)</h2>
+    <div class="rec">Recommendation: Review external forwarding rules. Consider blocking auto-forwarding to external domains via transport rule.</div>
+    <table>
+        <tr><th>Mailbox</th><th>Rule Type</th><th>Forward To</th><th>External</th><th>Rule Name</th></tr>
+        <tr><td>mwilliams@contoso.com</td><td>InboxRule</td><td class="risk">mwilliams.personal@gmail.com</td><td>True</td><td>Forward to Personal</td></tr>
+        <tr><td>sales@contoso.com</td><td>MailboxForwarding</td><td>crm-ingest@partner-crm.com</td><td>True</td><td>N/A (Mailbox Setting)</td></tr>
+        <tr><td>kanderson@contoso.com</td><td>InboxRule</td><td class="risk">k.anderson@outlook.com</td><td>True</td><td>Auto Forward</td></tr>
+        <tr><td>info@contoso.com</td><td>MailboxForwarding</td><td>helpdesk@contoso.com</td><td>False</td><td>N/A (Mailbox Setting)</td></tr>
+        <tr><td>ethompson@contoso.com</td><td>InboxRule</td><td class="risk">ethompson@competitor.com</td><td>True</td><td>FW All</td></tr>
+    </table>
+
+    <h2>Conditional Access Policies (5)</h2>
+    <table>
+        <tr><th>Policy</th><th>State</th><th>Target Users</th><th>Target Apps</th><th>Requires MFA</th><th>Blocks Legacy</th></tr>
+        <tr><td>Require MFA for Admins</td><td>enabled</td><td>Roles: 4</td><td>All Apps</td><td>True</td><td>False</td></tr>
+        <tr><td>Require MFA for All Users</td><td>enabled</td><td>All Users</td><td>Office 365</td><td>True</td><td>False</td></tr>
+        <tr><td>Block Legacy Authentication</td><td>enabled</td><td>All Users</td><td>All Apps</td><td>False</td><td>True</td></tr>
+        <tr><td>Require Compliant Device</td><td>enabled</td><td>Groups: 3</td><td>Office 365</td><td>False</td><td>False</td></tr>
+        <tr><td>Block High Risk Sign-Ins</td><td>enabled</td><td>All Users</td><td>All Apps</td><td>False</td><td>False</td></tr>
+    </table>
+
+    <h2>Guest Accounts (31)</h2>
+    <table>
+        <tr><th>Name</th><th>Email</th><th>Invite State</th><th>Last Sign-In</th><th>Stale</th><th>Groups</th></tr>
+        <tr><td>John Partner</td><td>jpartner@vendor.com</td><td>Accepted</td><td>2026-02-10</td><td>False</td><td>Project-Alpha</td></tr>
+        <tr><td>External Auditor</td><td>auditor@auditfirm.com</td><td>Accepted</td><td class="risk">2025-08-15</td><td class="risk">True</td><td>Finance-Review</td></tr>
+        <tr><td>Jane Contractor</td><td>jcontractor@agency.com</td><td>Accepted</td><td class="risk">2025-06-01</td><td class="risk">True</td><td>IT-Projects; All-Staff</td></tr>
+        <tr><td>Test Account</td><td>test@external.com</td><td>PendingAcceptance</td><td></td><td class="risk">True</td><td></td></tr>
+    </table>
+</body>
+</html>
