@@ -24,7 +24,7 @@
     PrivateData = @{
         PSData = @{
             Tags       = @('Microsoft365', 'M365', 'Security', 'MFA', 'Azure', 'Audit', 'Compliance')
-            ProjectUri = 'https://github.com/yourGitHub/M365-SecurityBaseline'
+            ProjectUri = 'https://github.com/larro1991/M365-SecurityBaseline'
         }
     }
 }
